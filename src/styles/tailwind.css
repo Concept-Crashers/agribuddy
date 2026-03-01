@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Colors - Vibrant, premium agricultural feel */
+    --color-background: #F4F7F4;
+    /* Soft, slightly cooler off-white */
+    --color-foreground: #0F172A;
+    /* Slate 900 for high contrast text */
+    --color-card: rgba(255, 255, 255, 0.85);
+    /* For glassmorphism bases */
+    --color-card-foreground: #1e293b;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #1e293b;
+    --color-primary: #10B981;
+    /* Emerald 500 - vibrant modern green */
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #064E3B;
+    /* Emerald 900 - deep rich accent */
+    --color-secondary-foreground: #ffffff;
+    --color-muted: #F1F5F9;
+    /* Slate 100 */
+    --color-muted-foreground: #64748b;
+    /* Slate 500 */
+    --color-accent: #F59E0B;
+    /* Amber 500 */
+    --color-accent-foreground: #ffffff;
+    --color-destructive: #EF4444;
+    /* Red 500 */
+    --color-destructive-foreground: #ffffff;
+    --color-success: #22C55E;
+    /* Green 500 */
+    --color-success-foreground: #ffffff;
+    --color-warning: #F59E0B;
+    --color-warning-foreground: #ffffff;
+    --color-error: #EF4444;
+    --color-error-foreground: #ffffff;
+    --color-border: rgba(203, 213, 225, 0.4);
+    /* Slate 300, slightly transparent */
+    --color-input: rgba(255, 255, 255, 0.9);
+    --color-ring: rgba(16, 185, 129, 0.5);
+    /* Emerald ring */
+
+    /* Radius */
+    --radius: 1rem;
+    /* More rounded, softer premium feel */
+  }
+
+  .dark {
+    /* Sleek Dark Mode (Optional but ready) */
+    --color-background: #0B1120;
+    --color-foreground: #F8FAFC;
+    --color-card: rgba(30, 41, 59, 0.7);
+    --color-card-foreground: #F8FAFC;
+    --color-popover: #1E293B;
+    --color-popover-foreground: #F8FAFC;
+    --color-primary: #10B981;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #047857;
+    --color-secondary-foreground: #ffffff;
+    --color-muted: #334155;
+    --color-muted-foreground: #94A3B8;
+    --color-accent: #F59E0B;
+    --color-accent-foreground: #ffffff;
+    --color-border: rgba(51, 65, 85, 0.6);
+    --color-input: rgba(30, 41, 59, 0.8);
+    --color-ring: rgba(16, 185, 129, 0.6);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Soft background gradient to make flat color look dynamic */
+    background-image: radial-gradient(circle at top left, rgba(16, 185, 129, 0.03), transparent 40%),
+      radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.03), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  /* Headings with premium font */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+
+  /* Premium Glassmorphism Cards */
+  .glass-card {
+    background: var(--color-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  }
+
+  /* Deep Glass panel for intense focus areas or sidebars */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid var(--color-border);
+  }
+
+  .dark .glass-panel {
+    background: rgba(15, 23, 42, 0.65);
+  }
+
+  /* Organic shadow system */
+  .shadow-soft {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-hover {
+    box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.15), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Interactive smooth transitions */
+  .interactive-element {
+    transition: all 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .interactive-element:hover {
+    transform: translateY(-2px);
+  }
+
+  .interactive-element:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* Micro-animations */
+  .pulse-subtle {
+    animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-soft {
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.85;
+      transform: scale(0.98);
+    }
+  }
+
+  /* Vibrant Gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: white;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Agricultural touch targets */
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 8px;
+  }
+
+  /* Weather gradient backgrounds */
+  .weather-sunny {
+    background: linear-gradient(135deg, #FEF08A 0%, #F59E0B 100%);
+    color: white;
+  }
+
+  .weather-cloudy {
+    background: linear-gradient(135deg, #94A3B8 0%, #475569 100%);
+    color: white;
+  }
+
+  .weather-rainy {
+    background: linear-gradient(135deg, #38BDF8 0%, #2563EB 100%);
+    color: white;
+  }
+}
