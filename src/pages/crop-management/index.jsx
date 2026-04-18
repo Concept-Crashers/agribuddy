@@ -321,7 +321,7 @@ const CropManagement = () => {
         onToggle={() => setSidebarExpanded(!sidebarExpanded)}
         userRole="farmer"
       />
-      <main className={`transition-all duration-300 ${sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'} pt-16 pb-20 lg:pb-6`}>
+      <main className={`${sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'} pt-16 pb-20 lg:pb-6`}>
         <div className="p-4 sm:p-6 max-w-8xl mx-auto">
           {/* Page Header */}
           <div className="mb-8">
@@ -379,7 +379,7 @@ const CropManagement = () => {
 
               <div className="glass-card rounded-2xl p-4 sm:p-5 interactive-element hover:border-warning/30 group">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-warning/15 rounded-xl flex items-center justify-center group-hover:bg-warning/20 transition-colors pulse-subtle">
+                  <div className="w-12 h-12 bg-warning/15 rounded-xl flex items-center justify-center group-hover:bg-warning/20 transition-colors">
                     <Icon name="Calendar" size={24} className="text-warning" />
                   </div>
                   <div>

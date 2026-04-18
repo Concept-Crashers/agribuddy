@@ -10,6 +10,10 @@ const farmerSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    isRegistered: {
+        type: Boolean,
+        default: false,
+    },
     languagePreference: {
         type: String,
         enum: ['English', 'Luganda', 'Runyankole', 'Luo'],
@@ -22,6 +26,12 @@ const farmerSchema = new mongoose.Schema({
     primaryCrops: [{
         type: String,
     }],
+    subscriptions: {
+        isActive: { type: Boolean, default: false },
+        expiresAt: { type: Date },
+        focus: { type: String, default: '' }, // e.g., 'maize', 'poultry'
+        duration: { type: String, default: '' } // e.g., '1 Week', '1 Month', '1 Year'
+    },
     ussdSessionState: {
         type: Object,
         default: {},

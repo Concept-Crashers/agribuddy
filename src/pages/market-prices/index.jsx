@@ -17,7 +17,7 @@ const MarketPrices = () => {
                 onToggle={() => setSidebarExpanded(!sidebarExpanded)}
                 userRole="farmer"
             />
-            <main className={`transition-all duration-300 pt-16 ${sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'}`}>
+            <main className={`pt-16 ${sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'}`}>
                 <div className="p-4 sm:p-6 lg:p-8 max-w-8xl mx-auto">
                     <div className="flex justify-between items-center mb-8">
                         <h1 className="text-3xl font-bold">Market Prices</h1>

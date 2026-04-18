@@ -12,6 +12,7 @@ const AgriAssistant = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [cropContext, setCropContext] = useState('');
 
     useEffect(() => {
         const checkScreenSize = () => {
@@ -39,6 +40,7 @@ const AgriAssistant = () => {
             const result = await askAgriculturalQuestion(messageText, {
                 language: 'English',
                 location: 'Uganda',
+                cropType: cropContext,
             });
 
             const assistantMessage = {
@@ -86,7 +88,7 @@ const AgriAssistant = () => {
                 onToggle={() => setSidebarExpanded(!sidebarExpanded)}
                 userRole="farmer"
             />
-            <main className={`transition-all duration-300 ${isMobile ? 'ml-0 pb-20' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'} pt-16`}>
+            <main className={`${isMobile ? 'ml-0 pb-20' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'} pt-16`}>
                 <div className="p-4 sm:p-6 lg:p-8 max-w-8xl mx-auto h-[calc(100vh-64px)] flex flex-col">
                     <div className="flex flex-col lg:flex-row gap-8 flex-1 overflow-hidden min-h-0">
                         {/* LEFT: Chat Area (70%) */}
@@ -102,15 +104,30 @@ const AgriAssistant = () => {
                                         <p className="text-xs font-medium text-muted-foreground">Your Farming Assistant</p>
                                     </div>
                                 </div>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={handleClearChat}
-                                    className="border-muted hover:bg-muted font-medium text-sm rounded-lg"
-                                >
-                                    <Icon name="Trash2" size={16} className="mr-2" />
-                                    Clear Chat
-                                </Button>
+                                <div className="flex items-center gap-3">
+                                    <div className="hidden sm:flex items-center gap-2">
+                                        <Icon name="Wheat" size={16} className="text-muted-foreground" />
+                                        <select
+                                            value={cropContext}
+                                            onChange={e => setCropContext(e.target.value)}
+                                            className="text-sm bg-card border border-border rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                        >
+                                            <option value="">Any crop</option>
+                                            {['Maize', 'Banana', 'Coffee', 'Cassava', 'Sweet Potato', 'Beans', 'Rice', 'Groundnuts', 'Sorghum'].map(c => (
+                                                <option key={c} value={c}>{c}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleClearChat}
+                                        className="border-muted hover:bg-muted font-medium text-sm rounded-lg"
+                                    >
+                                        <Icon name="Trash2" size={16} className="mr-2" />
+                                        Clear Chat
+                                    </Button>
+                                </div>
                             </div>
 
                             {/* Chat Messages */}

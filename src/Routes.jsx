@@ -5,12 +5,16 @@ import ErrorBoundary from "components/ErrorBoundary";
 import NotFound from "pages/NotFound";
 import PlantDiseaseDetection from './pages/plant-disease-detection';
 import LoginPage from './pages/login';
+import SignUpPage from './pages/signup';
 import FarmerDashboard from './pages/farmer-dashboard';
 import LivestockManagement from './pages/livestock-management';
 import CropManagement from './pages/crop-management';
 import WeatherDashboard from './pages/weather-dashboard';
 import AgriAssistant from './pages/agri-assistant';
 import MarketPrices from './pages/market-prices';
+import CropLibrary from './pages/crop-library';
+import Marketplace from './pages/marketplace';
+import CommunityForum from './pages/community-forum';
 
 const Routes = () => {
   return (
@@ -22,12 +26,16 @@ const Routes = () => {
           <Route path="/" element={<CropManagement />} />
           <Route path="/plant-disease-detection" element={<PlantDiseaseDetection />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
           <Route path="/livestock-management" element={<LivestockManagement />} />
           <Route path="/crop-management" element={<CropManagement />} />
           <Route path="/weather-dashboard" element={<WeatherDashboard />} />
           <Route path="/agri-assistant" element={<AgriAssistant />} />
           <Route path="/market-prices" element={<MarketPrices />} />
+          <Route path="/crop-library" element={<CropLibrary />} />
+          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/community-forum" element={<CommunityForum />} />
           <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </ErrorBoundary>

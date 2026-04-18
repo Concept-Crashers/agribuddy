@@ -1,9 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const ussdRoutes = require('./routes/ussd');
+const diagnosisRoutes = require('./routes/diagnosis');
+const cropsRoutes = require('./routes/crops');
+const marketplaceRoutes = require('./routes/marketplace');
+const communityRoutes = require('./routes/community');
+const alertRoutes = require('./routes/alerts');
+const smsRoutes = require('./routes/sms');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/auth');
+
 
 // Connect to MongoDB
 connectDB();
@@ -11,16 +20,30 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3001; // Using 3001 as React is usually on 3000
 
+// Enable CORS
+app.use(cors());
+
 // Africa's Talking sends USSD data as form-urlencoded
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// Also increase limit to support base64 images
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 
 // Routes
 app.use('/ussd', ussdRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/diagnosis', diagnosisRoutes);
+app.use('/api/crops', cropsRoutes);
+app.use('/api/marketplace', marketplaceRoutes);
+app.use('/api/community', communityRoutes);
+app.use('/api/alerts', alertRoutes);
+app.use('/sms', smsRoutes);
 
 app.get('/', (req, res) => {
-    res.send('AgriBuddy backend is running. USSD endpoint is at /ussd');
+    res.send('AgriBuddy backend is running. USSD endpoint is at /ussd and diagnostics at /api/diagnosis');
 });
+
+const cronService = require('./services/cronService');
+cronService.startCronJobs();
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

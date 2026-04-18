@@ -4,11 +4,19 @@ import Sidebar from '../../components/ui/Sidebar';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import CropCalendar from './components/CropCalendar';
+import { useAuth } from '../../context/AuthContext';
 
 const FarmerDashboard = () => {
   const navigate = useNavigate();
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -35,14 +43,14 @@ const FarmerDashboard = () => {
         userRole="farmer"
         weatherAlerts={0}
       />
-      <main className={`flex-1 transition-all duration-300 pb-20 lg:pb-6 ${isMobile ? 'ml-0' : sidebarExpanded ? 'lg:ml-64' : 'lg:ml-16'} min-h-screen`}>
+      <main className={`flex-1 pb-20 lg:pb-6 ${isMobile ? 'ml-0' : sidebarExpanded ? 'lg:ml-64' : 'lg:ml-16'} min-h-screen`}>
         <div className="p-4 sm:p-6 lg:px-8 lg:py-8 max-w-7xl mx-auto space-y-6">
 
           {/* Top Header Row (Search & Actions) */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1 flex items-center gap-2 tracking-tight">
-                Good Morning, Moses <span className="text-3xl animate-bounce" style={{ animationDuration: '3s' }}>🌤️</span>
+                Good Morning, {user?.fullName?.split(' ')[0] || 'User'} <span className="text-3xl">🌤️</span>
               </h1>
               <p className="text-muted-foreground text-sm font-medium">
                 Monday, 24 Feb 2026
@@ -62,13 +70,51 @@ const FarmerDashboard = () => {
 
               <button className="w-11 h-11 rounded-xl border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-white transition-all relative flex-shrink-0 shadow-soft interactive-element">
                 <Icon name="Bell" size={20} />
-                <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 rounded-full bg-destructive border-2 border-white pulse-subtle"></span>
+                <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 rounded-full bg-destructive border-2 border-white"></span>
               </button>
 
               <Button className="h-11 px-5 rounded-xl gradient-primary text-white text-sm font-semibold whitespace-nowrap hidden sm:flex shadow-hover interactive-element">
                 <Icon name="Plus" size={18} className="mr-2" />
                 New Crop Cycle
               </Button>
+
+              {/* Profile Dropdown */}
+              <div className="relative">
+                <button 
+                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                  className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary hover:bg-primary/20 transition-all font-bold tracking-wider relative focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  aria-label="User menu"
+                >
+                  {user?.fullName ? user.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'AG'}
+                </button>
+                
+                {showProfileDropdown && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setShowProfileDropdown(false)}
+                    ></div>
+                    <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                      <div className="px-4 py-2 border-b border-border/50 mb-1">
+                        <p className="text-sm font-semibold text-foreground truncate">{user?.fullName || 'AgriBuddy User'}</p>
+                        <p className="text-xs text-muted-foreground truncate">{user?.phoneNumber || 'Premium Plan'}</p>
+                      </div>
+                      <button className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-3">
+                        <Icon name="User" size={16} className="text-muted-foreground" /> Your Profile
+                      </button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-3">
+                        <Icon name="Settings" size={16} className="text-muted-foreground" /> Account Settings
+                      </button>
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors flex items-center gap-3 mt-1 border-t border-border/50 pt-2"
+                      >
+                        <Icon name="LogOut" size={16} /> Sign Out
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -116,7 +162,7 @@ const FarmerDashboard = () => {
             <div className="glass-card rounded-2xl p-5 flex flex-col justify-between cursor-pointer interactive-element group" onClick={() => navigate('/weather-dashboard')}>
               <div className="flex justify-between items-start mb-4">
                 <span className="text-sm font-semibold text-muted-foreground group-hover:text-destructive transition-colors">Active Alerts</span>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition-transform pulse-subtle">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white shadow-soft group-hover:scale-110">
                   <Icon name="AlertTriangle" size={24} />
                 </div>
               </div>
@@ -178,7 +224,7 @@ const FarmerDashboard = () => {
                     <div className="w-full border-b border-dashed border-border h-1/4"></div>
                   </div>
 
-                  <div className="absolute bottom-4 right-4 gradient-primary text-white text-xs font-bold px-2 py-1.5 rounded-lg shadow-soft z-10 animate-bounce" style={{ animationDuration: '2s' }}>1200</div>
+                  <div className="absolute bottom-4 right-4 gradient-primary text-white text-xs font-bold px-2 py-1.5 rounded-lg shadow-soft z-10">1200</div>
                   <div className="absolute -bottom-8 w-full flex justify-between px-2 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
                     <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span className="text-foreground font-black">Fri</span>
                   </div>
@@ -192,7 +238,7 @@ const FarmerDashboard = () => {
             <div className="glass-card rounded-2xl p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <Icon name="Bug" size={24} className="text-destructive pulse-subtle" />
+                  <Icon name="Bug" size={24} className="text-destructive" />
                   Recent Disease Alerts
                 </h3>
                 <button className="text-sm text-primary font-bold hover:underline tracking-wide hover:text-secondary transition-colors">View All</button>

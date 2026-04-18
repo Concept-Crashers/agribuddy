@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
+import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = ({
   isExpanded = true,
@@ -12,6 +13,11 @@ const Sidebar = ({
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
+  const { user } = useAuth();
+  const getInitials = (name) => {
+    if (!name) return 'AG';
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -39,6 +45,20 @@ const Sidebar = ({
       description: 'Live Ugandan crop prices'
     },
     {
+      label: 'Marketplace',
+      path: '/marketplace',
+      icon: 'ShoppingBag',
+      roles: ['farmer', 'ngo'],
+      description: 'Buy seeds, tools & supplies'
+    },
+    {
+      label: 'Community',
+      path: '/community-forum',
+      icon: 'Users',
+      roles: ['farmer', 'ngo'],
+      description: 'Ask questions & share tips'
+    },
+    {
       label: 'Crop Management',
       path: '/crop-management',
       icon: 'Wheat',
@@ -58,6 +78,13 @@ const Sidebar = ({
       icon: 'Bug',
       roles: ['farmer', 'ngo'],
       description: 'AI-powered plant diagnosis'
+    },
+    {
+      label: 'Crop Library',
+      path: '/crop-library',
+      icon: 'BookOpen',
+      roles: ['farmer', 'ngo'],
+      description: 'Browse crop knowledge base'
     },
     {
       label: 'AskBuddy AI',
@@ -86,7 +113,7 @@ const Sidebar = ({
         <Icon name="Leaf" size={24} color="white" strokeWidth={2.5} />
       </div>
       {isExpanded && (
-        <div className="flex flex-col animate-fade-in text-secondary-foreground">
+        <div className="flex flex-col text-secondary-foreground">
           <span className="text-xl font-semibold">AgriBuddy</span>
           <span className="text-sm font-medium opacity-80">Uganda</span>
         </div>
@@ -121,7 +148,7 @@ const Sidebar = ({
               )}
             </div>
             {isExpanded && (
-              <div className="flex flex-col items-start animate-fade-in text-left">
+              <div className="flex flex-col items-start text-left">
                 <span className="font-medium text-sm leading-tight">{item?.label}</span>
                 <span className={`text-xs mt-0.5 ${isActive ? 'text-primary-foreground/80' : 'opacity-70'
                   }`}>
@@ -177,7 +204,7 @@ const Sidebar = ({
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-full bg-secondary bg-gradient-to-b from-secondary to-[#022c22] text-secondary-foreground shadow-hover border-r border-white/5 z-40 transition-all duration-300 ${isExpanded ? 'w-80' : 'w-16'
+      className={`fixed left-0 top-0 h-full bg-secondary bg-gradient-to-b from-secondary to-[#022c22] text-secondary-foreground shadow-hover border-r border-white/5 z-40 ${isExpanded ? 'w-80' : 'w-16'
         }`}
     >
       <div className="flex flex-col h-full">
@@ -217,12 +244,12 @@ const Sidebar = ({
               <Icon name="ChevronRight" size={18} />
             </Button>
           ) : (
-            <div className="flex items-center space-x-3 animate-fade-in py-2 p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer">
+            <div className="flex items-center space-x-3 py-2 p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer">
               <div className="w-10 h-10 gradient-primary rounded-full flex items-center justify-center font-bold text-white shadow-soft ring-2 ring-white/20 flex-shrink-0">
-                MK
+                {getInitials(user?.fullName)}
               </div>
               <div className="flex flex-col flex-1">
-                <span className="text-sm font-bold text-white tracking-wide">Moses Katende</span>
+                <span className="text-sm font-bold text-white tracking-wide">{user?.fullName || "Agribuddy User"}</span>
                 <span className="text-xs text-white/70 font-medium">Premium Plan</span>
               </div>
             </div>

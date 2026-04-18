@@ -45,7 +45,7 @@ const WeatherDashboard = () => {
         userRole={userRole}
         weatherAlerts={0}
       />
-      <main className={`transition-all duration-300 pt-16 pb-20 lg:pb-6 ${isMobile ? 'ml-0' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'
+      <main className={`pt-16 pb-20 lg:pb-6 ${isMobile ? 'ml-0' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'
         }`}>
         <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-8xl mx-auto">
 

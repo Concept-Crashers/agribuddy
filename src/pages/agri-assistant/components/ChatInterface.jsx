@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import ReactMarkdown from 'react-markdown';
 
 const ChatInterface = ({ onSendMessage, messages, isLoading }) => {
     const [inputValue, setInputValue] = useState('');
@@ -85,9 +86,9 @@ const ChatInterface = ({ onSendMessage, messages, isLoading }) => {
                                             </div>
                                         )}
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm whitespace-pre-wrap break-words">
-                                                {message.content}
-                                            </p>
+                                            <div className="text-sm break-words prose prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-black/5 prose-pre:border prose-pre:border-black/10 text-foreground">
+                                                <ReactMarkdown>{message.content}</ReactMarkdown>
+                                            </div>
                                             {message.sources && message.sources.length > 0 && (
                                                 <div className="mt-2 pt-2 border-t border-border/50">
                                                     <p className="text-xs text-muted-foreground mb-1">Sources:</p>
@@ -124,9 +125,9 @@ const ChatInterface = ({ onSendMessage, messages, isLoading }) => {
                                             <Icon name="Bot" size={14} className="text-primary" />
                                         </div>
                                         <div className="flex space-x-1">
-                                            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                                            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                                            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                            <div className="w-2 h-2 bg-primary rounded-full" style={{ opacity: 0.4 }}></div>
+                                            <div className="w-2 h-2 bg-primary rounded-full" style={{ opacity: 0.7 }}></div>
+                                            <div className="w-2 h-2 bg-primary rounded-full" style={{ opacity: 1 }}></div>
                                         </div>
                                     </div>
                                 </div>

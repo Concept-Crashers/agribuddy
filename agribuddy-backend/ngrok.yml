@@ -1,0 +1,6 @@
+version: "2"
+authtoken: 39yq8cnZF2S4WEIvRDT02y2gJTq_7dWk5ffFonto3ARuXVBdr
+tunnels:
+  agribuddy:
+    proto: http
+    addr: 3001

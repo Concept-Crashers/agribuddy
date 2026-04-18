@@ -390,7 +390,7 @@ const LivestockManagement = () => {
         userRole="farmer"
         weatherAlerts={2}
       />
-      <main className={`pt-16 pb-20 lg:pb-6 transition-all duration-300 ${
+      <main className={`pt-16 pb-20 lg:pb-6 ${
         isMobile ? 'ml-0' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'
       }`}>
         <div className="p-4 sm:p-6 max-w-8xl mx-auto">

@@ -105,12 +105,12 @@ const PlantDiseaseDetection = () => {
     <div className="min-h-screen bg-background">
       <Header onToggleSidebar={() => setSidebarExpanded(!sidebarExpanded)} sidebarExpanded={sidebarExpanded} userRole="farmer" />
       <Sidebar isExpanded={sidebarExpanded} onToggle={() => setSidebarExpanded(!sidebarExpanded)} userRole="farmer" />
-      <main className={`transition-all duration-300 ${isMobile ? 'ml-0 pb-20' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'} pt-16`}>
+      <main className={`${isMobile ? 'ml-0 pb-20' : sidebarExpanded ? 'lg:ml-80' : 'lg:ml-16'} pt-16`}>
         <div className="p-4 sm:p-6 space-y-6 max-w-8xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
             <div className="flex items-center space-x-4 mb-4 sm:mb-0">
               <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm border border-primary/20">
-                <Icon name="Bug" size={28} className="text-primary pulse-subtle" />
+                <Icon name="Bug" size={28} className="text-primary" />
               </div>
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">Plant Disease Detection</h1>
@@ -161,7 +161,7 @@ const PlantDiseaseDetection = () => {
                   <div className="text-sm font-medium text-muted-foreground">Accuracy</div>
                 </div>
                 <div className="glass-card rounded-2xl p-5 text-center interactive-element hover:border-warning/30 group">
-                  <div className="w-12 h-12 bg-warning/15 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-warning/20 transition-colors pulse-subtle">
+                  <div className="w-12 h-12 bg-warning/15 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-warning/20 transition-colors">
                     <Icon name="Activity" size={24} className="text-warning" />
                   </div>
                   <div className="text-2xl sm:text-3xl font-bold text-foreground leading-none mb-1">23</div>
@@ -184,7 +184,7 @@ const PlantDiseaseDetection = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
                 <div className="flex items-center space-x-4 mb-4 sm:mb-0 ml-2">
                   <div className="w-12 h-12 bg-error/15 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <Icon name="AlertTriangle" size={24} className="text-error pulse-subtle" />
+                    <Icon name="AlertTriangle" size={24} className="text-error" />
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-foreground">Emergency Plant Health Support</h3>
