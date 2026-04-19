@@ -5,6 +5,7 @@ import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import CropCalendar from './components/CropCalendar';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const FarmerDashboard = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const FarmerDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
 
   const handleLogout = () => {
     logout();
@@ -50,7 +52,7 @@ const FarmerDashboard = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1 flex items-center gap-2 tracking-tight">
-                Good Morning, {user?.fullName?.split(' ')[0] || 'User'} <span className="text-3xl">🌤️</span>
+                {t('good_morning', 'Good Morning')}, {user?.fullName?.split(' ')[0] || 'User'} <span className="text-3xl">🌤️</span>
               </h1>
               <p className="text-muted-foreground text-sm font-medium">
                 Monday, 24 Feb 2026
@@ -63,7 +65,7 @@ const FarmerDashboard = () => {
                 <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <input
                   type="text"
-                  placeholder="Search crops, markets..."
+                  placeholder={t('search', 'Search crops, markets...')}
                   className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-card/50 backdrop-blur-sm text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all shadow-sm hover:shadow-md"
                 />
               </div>
@@ -75,7 +77,7 @@ const FarmerDashboard = () => {
 
               <Button className="h-11 px-5 rounded-xl gradient-primary text-white text-sm font-semibold whitespace-nowrap hidden sm:flex shadow-hover interactive-element">
                 <Icon name="Plus" size={18} className="mr-2" />
-                New Crop Cycle
+                {t('new_crop_cycle', 'New Crop Cycle')}
               </Button>
 
               {/* Profile Dropdown */}
@@ -100,7 +102,7 @@ const FarmerDashboard = () => {
                         <p className="text-xs text-muted-foreground truncate">{user?.phoneNumber || 'Premium Plan'}</p>
                       </div>
                       <button className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-3">
-                        <Icon name="User" size={16} className="text-muted-foreground" /> Your Profile
+                        <Icon name="User" size={16} className="text-muted-foreground" /> {t('my_account', 'Your Profile')}
                       </button>
                       <button className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-3">
                         <Icon name="Settings" size={16} className="text-muted-foreground" /> Account Settings
@@ -109,7 +111,7 @@ const FarmerDashboard = () => {
                         onClick={handleLogout}
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors flex items-center gap-3 mt-1 border-t border-border/50 pt-2"
                       >
-                        <Icon name="LogOut" size={16} /> Sign Out
+                        <Icon name="LogOut" size={16} /> {t('logout', 'Sign Out')}
                       </button>
                     </div>
                   </>
@@ -124,7 +126,7 @@ const FarmerDashboard = () => {
             {/* Card 1: Weather */}
             <div className="glass-card rounded-2xl p-5 flex flex-col justify-between interactive-element group">
               <div className="flex justify-between items-start mb-4">
-                <span className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">Weather (Kampala)</span>
+                <span className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">{t('weather', 'Weather')} (Kampala)</span>
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition-transform">
                   <Icon name="CloudSun" size={24} />
                 </div>
@@ -141,7 +143,7 @@ const FarmerDashboard = () => {
             {/* Card 2: Maize Price */}
             <div className="glass-card rounded-2xl p-5 flex flex-col justify-between cursor-pointer interactive-element group" onClick={() => navigate('/market-prices')}>
               <div className="flex justify-between items-start mb-4">
-                <span className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">Maize Price</span>
+                <span className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">{t('maize_price', 'Maize Price')}</span>
                 <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition-transform">
                   <Icon name="Banknote" size={24} />
                 </div>
@@ -161,7 +163,7 @@ const FarmerDashboard = () => {
             {/* Card 3: Active Alerts */}
             <div className="glass-card rounded-2xl p-5 flex flex-col justify-between cursor-pointer interactive-element group" onClick={() => navigate('/weather-dashboard')}>
               <div className="flex justify-between items-start mb-4">
-                <span className="text-sm font-semibold text-muted-foreground group-hover:text-destructive transition-colors">Active Alerts</span>
+                <span className="text-sm font-semibold text-muted-foreground group-hover:text-destructive transition-colors">{t('active_alerts', 'Active Alerts')}</span>
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white shadow-soft group-hover:scale-110">
                   <Icon name="AlertTriangle" size={24} />
                 </div>
@@ -206,7 +208,7 @@ const FarmerDashboard = () => {
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
                     <Icon name="TrendingUp" size={24} className="text-primary" />
-                    Market Pulse
+                    {t('market_pulse', 'Market Pulse')}
                   </h3>
                   <button className="text-xs text-muted-foreground border border-border rounded-lg px-3 py-1.5 font-bold hover:bg-muted hover:text-foreground transition-all">Last 7 Days</button>
                 </div>
@@ -239,9 +241,9 @@ const FarmerDashboard = () => {
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <Icon name="Bug" size={24} className="text-destructive" />
-                  Recent Disease Alerts
+                  {t('recent_disease_alerts', 'Recent Disease Alerts')}
                 </h3>
-                <button className="text-sm text-primary font-bold hover:underline tracking-wide hover:text-secondary transition-colors">View All</button>
+                <button className="text-sm text-primary font-bold hover:underline tracking-wide hover:text-secondary transition-colors">{t('view_all', 'View All')}</button>
               </div>
               <div className="space-y-4">
                 <div className="flex items-start gap-4 pb-4 border-b border-border hover:bg-white/50 p-2 -mx-2 rounded-xl transition-colors cursor-pointer group">
@@ -296,9 +298,9 @@ const FarmerDashboard = () => {
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <Icon name="MessageSquare" size={24} className="text-primary" />
-                  Community Tips
+                  {t('community_tips', 'Community Tips')}
                 </h3>
-                <button className="text-sm text-primary font-bold hover:underline tracking-wide hover:text-secondary transition-colors">Go to Forum</button>
+                <button className="text-sm text-primary font-bold hover:underline tracking-wide hover:text-secondary transition-colors">{t('marketplace', 'Go to Forum')}</button>
               </div>
               <div className="space-y-4">
                 <div className="p-4 rounded-2xl border border-border bg-card shadow-sm relative interactive-element cursor-pointer group hover:border-primary/30">

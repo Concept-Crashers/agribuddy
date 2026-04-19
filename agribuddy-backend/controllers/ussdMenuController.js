@@ -60,21 +60,60 @@ const handleUssdRequest = async (req, res) => {
         }
 
         // -----------------------------
+        // LANGUAGE SELECTION FLOW
+        // -----------------------------
+        if (text === '' && (!farmer.languagePreference || farmer.languagePreference === 'eng')) {
+            response = `CON Welcome to AgriBuddy!\nPlease select your preferred language:
+1. English
+2. Luganda
+3. Ateso
+4. Acholi
+5. Runyankole
+6. Lugbara`;
+            res.set('Content-Type', 'text/plain');
+            return res.send(response);
+        }
+
+        // Handle language selection input
+        if (level === 1 && ['1','2','3','4','5','6'].includes(textArray[0]) && !farmer.isRegistered) {
+            const langMap = { '1': 'eng', '2': 'lug', '3': 'teo', '4': 'ach', '5': 'nyn', '6': 'lgg' };
+            farmer.languagePreference = langMap[textArray[0]];
+            await farmer.save();
+            
+            // Move to registration
+            response = `CON Welcome to AgriBuddy!\nTo set up your account, please reply with your Name:`;
+            if (farmer.languagePreference !== 'eng') {
+                const languageService = require('../services/languageService');
+                response = await languageService.translateText(response, 'eng', farmer.languagePreference);
+                response = `CON ${response}`;
+            }
+            res.set('Content-Type', 'text/plain');
+            return res.send(response);
+        }
+
+        // -----------------------------
         // REGISTRATION / ONBOARDING FLOW
         // -----------------------------
         if (!farmer.isRegistered) {
-            if (level === 0) {
-                response = `CON Welcome to AgriBuddy!\nTo set up your account, please reply with your Name:`;
-            } else if (level === 1) {
-                response = `CON Thank you, ${textArray[0]}.\nWhat is your District? (e.g. Kampala):`;
+            if (level === 1) {
+                // This case is handled above after language selection, but if text was already set
+                response = `CON To set up your account, please reply with your Name:`;
             } else if (level === 2) {
-                farmer.name = textArray[0];
-                farmer.location = textArray[1];
+                response = `CON Thank you, ${textArray[1] || textArray[0]}.\nWhat is your District? (e.g. Kampala):`;
+            } else if (level === 3) {
+                farmer.name = textArray[1] || textArray[0];
+                farmer.location = textArray[2] || textArray[1];
                 farmer.isRegistered = true;
                 await farmer.save();
                 response = `END Registration successful!\nPlease dial the code again to access the main menu.`;
             } else {
                 response = `END Invalid entry. Please dial again.`;
+            }
+
+            if (farmer.languagePreference !== 'eng') {
+                const languageService = require('../services/languageService');
+                response = await languageService.translateText(response, 'eng', farmer.languagePreference);
+                response = response.startsWith('CON') || response.startsWith('END') ? response : (level < 3 ? `CON ${response}` : `END ${response}`);
             }
             res.set('Content-Type', 'text/plain');
             return res.send(response);
@@ -85,14 +124,23 @@ const handleUssdRequest = async (req, res) => {
         // -----------------------------
 
         // Main Menu
-        if (level === 0) {
-            response = `CON Welcome ${farmer.name || 'Farmer'} 
+        if (level === 0 || (level === 1 && !['1','2','3','4','5','6'].includes(text))) {
+            const menuText = `Welcome ${farmer.name || 'Farmer'}
 1. Market Prices
 2. Weather Forecast
 3. Pest & Disease Alerts
 4. Farm Input Marketplace
 5. My Account
-6. Subscriptions`;
+6. Subscriptions
+7. AskBuddy AI`;
+            
+            if (farmer.languagePreference === 'eng') {
+                response = `CON ${menuText}`;
+            } else {
+                const languageService = require('../services/languageService');
+                const translatedMenu = await languageService.translateText(menuText, 'eng', farmer.languagePreference);
+                response = `CON ${translatedMenu}`;
+            }
         }
 
         // 1. Market Prices
@@ -322,6 +370,33 @@ Subscription: ${farmer.subscriptions?.isActive ? 'Active (' + farmer.subscriptio
                     await farmer.save();
                     response = `END You are now subscribed to automated tips for ${focus} for ${farmer.subscriptions.duration}!`;
                 }
+            }
+        }
+
+        // 7. AskBuddy AI
+        else if (text === '7' || text.startsWith('7*')) {
+            const textArray = text.split('*');
+            if (text === '7') {
+                response = `CON AskBuddy AI: What is your farming question?`;
+            } else {
+                const question = textArray[textArray.length - 1];
+                const geminiService = require('../services/geminiService');
+                
+                // Get AI advice (this will handle translation internally since we updated it)
+                const aiResult = await geminiService.getAgriculturalAdvice(question, '', farmer.languagePreference);
+                
+                if (aiResult.success) {
+                    // Truncate for USSD display
+                    response = `END ${aiResult.answer.substring(0, 155)}`;
+                } else {
+                    response = `END Sorry, I couldn't process your question. Please try again later.`;
+                }
+            }
+
+            if (farmer.languagePreference !== 'eng') {
+                const languageService = require('../services/languageService');
+                response = await languageService.translateText(response, 'eng', farmer.languagePreference);
+                response = response.startsWith('CON') || response.startsWith('END') ? response : (text === '7' ? `CON ${response}` : `END ${response}`);
             }
         }
 

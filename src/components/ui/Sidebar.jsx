@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const Sidebar = ({
   isExpanded = true,
@@ -12,6 +13,7 @@ const Sidebar = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useAuth();
   const getInitials = (name) => {
@@ -31,70 +33,70 @@ const Sidebar = ({
 
   const navigationItems = [
     {
-      label: 'Dashboard',
+      label: t('dashboard', 'Dashboard'),
       path: '/farmer-dashboard',
       icon: 'LayoutDashboard',
       roles: ['farmer', 'ngo', 'government'],
       description: 'Overview and quick actions'
     },
     {
-      label: 'Market Prices',
+      label: t('market_prices', 'Market Prices'),
       path: '/market-prices',
       icon: 'TrendingUp',
       roles: ['farmer', 'ngo', 'government'],
       description: 'Live Ugandan crop prices'
     },
     {
-      label: 'Marketplace',
+      label: t('marketplace', 'Marketplace'),
       path: '/marketplace',
       icon: 'ShoppingBag',
       roles: ['farmer', 'ngo'],
       description: 'Buy seeds, tools & supplies'
     },
     {
-      label: 'Community',
+      label: t('community', 'Community'),
       path: '/community-forum',
       icon: 'Users',
       roles: ['farmer', 'ngo'],
       description: 'Ask questions & share tips'
     },
     {
-      label: 'Crop Management',
+      label: t('crop_management', 'Crop Management'),
       path: '/crop-management',
       icon: 'Wheat',
       roles: ['farmer', 'ngo'],
       description: 'Plan and track your crops'
     },
     {
-      label: 'Livestock',
+      label: t('livestock', 'Livestock'),
       path: '/livestock-management',
       icon: 'Cow',
       roles: ['farmer', 'ngo'],
       description: 'Manage your animals'
     },
     {
-      label: 'Disease Detection',
+      label: t('disease_detection', 'Disease Detection'),
       path: '/plant-disease-detection',
       icon: 'Bug',
       roles: ['farmer', 'ngo'],
       description: 'AI-powered plant diagnosis'
     },
     {
-      label: 'Crop Library',
+      label: t('crop_library', 'Crop Library'),
       path: '/crop-library',
       icon: 'BookOpen',
       roles: ['farmer', 'ngo'],
       description: 'Browse crop knowledge base'
     },
     {
-      label: 'AskBuddy AI',
+      label: t('ask_buddy', 'AskBuddy AI'),
       path: '/agri-assistant',
       icon: 'Bot',
       roles: ['farmer', 'ngo'],
       description: 'AI agricultural advisor'
     },
     {
-      label: 'Weather',
+      label: t('weather', 'Weather'),
       path: '/weather-dashboard',
       icon: 'CloudSun',
       roles: ['farmer', 'ngo', 'government'],

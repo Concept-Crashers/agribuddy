@@ -18,6 +18,18 @@ const marketPriceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    district: {
+        type: String,
+    },
+    source: {
+        type: String,
+        required: true,
+        default: 'Market',
+    },
+    trend: {
+        type: Number, // Percentage change
+        default: 0,
+    },
     dateUpdated: {
         type: Date,
         default: Date.now,

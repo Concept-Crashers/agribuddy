@@ -12,6 +12,7 @@ const alertRoutes = require('./routes/alerts');
 const smsRoutes = require('./routes/sms');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
+const marketPriceRoutes = require('./routes/marketPriceRoutes');
 
 
 // Connect to MongoDB
@@ -34,6 +35,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/diagnosis', diagnosisRoutes);
 app.use('/api/crops', cropsRoutes);
 app.use('/api/marketplace', marketplaceRoutes);
+app.use('/api/market-prices', marketPriceRoutes);
 app.use('/api/community', communityRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/sms', smsRoutes);

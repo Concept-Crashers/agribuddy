@@ -16,8 +16,8 @@ const farmerSchema = new mongoose.Schema({
     },
     languagePreference: {
         type: String,
-        enum: ['English', 'Luganda', 'Runyankole', 'Luo'],
-        default: 'English',
+        enum: ['eng', 'lug', 'ach', 'teo', 'lgg', 'nyn'],
+        default: 'eng',
     },
     location: {
         type: String,

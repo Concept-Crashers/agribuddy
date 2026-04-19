@@ -4,6 +4,7 @@ import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import Header from '../../components/ui/Header';
 import Sidebar from '../../components/ui/Sidebar';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Import components
 import ActiveCropsGrid from './components/ActiveCropsGrid';
@@ -19,6 +20,7 @@ const CropManagement = () => {
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [showPlantingScheduler, setShowPlantingScheduler] = useState(false);
   const [showCropDetails, setShowCropDetails] = useState(false);
+  const { t } = useLanguage();
 
   // Mock data for active crops
   const [crops, setCrops] = useState([
@@ -211,9 +213,9 @@ const CropManagement = () => {
   ]);
 
   const tabs = [
-    { id: 'crops', label: 'Active Crops', icon: 'Wheat', count: crops?.length },
-    { id: 'calendar', label: 'Crop Calendar', icon: 'Calendar' },
-    { id: 'analytics', label: 'Yield Analytics', icon: 'BarChart3' }
+    { id: 'crops', label: t('total_crops', 'Active Crops'), icon: 'Wheat', count: crops?.length },
+    { id: 'calendar', label: t('seasonal_calendar', 'Crop Calendar'), icon: 'Calendar' },
+    { id: 'analytics', label: t('market_pulse', 'Yield Analytics'), icon: 'BarChart3' }
   ];
 
   const handleCropSelect = (crop) => {
@@ -255,8 +257,8 @@ const CropManagement = () => {
 
   const quickActions = [
     {
-      title: "Disease Detection",
-      description: "AI-powered plant health analysis",
+      title: t('disease_detection', 'Disease Detection'),
+      description: t('Disease_overview', 'AI-powered plant health analysis'),
       icon: "Bug",
       color: "bg-destructive/10 text-destructive border-destructive/20",
       action: () => navigate('/plant-disease-detection')
@@ -269,8 +271,8 @@ const CropManagement = () => {
       action: () => navigate('/weather-dashboard')
     },
     {
-      title: "Add New Crop",
-      description: "Schedule new planting",
+      title: t('new_crop_cycle', 'Add New Crop'),
+      description: t('seasonal_calendar', 'Schedule new planting'),
       icon: "Plus",
       color: "bg-success/10 text-success border-success/20",
       action: () => setShowPlantingScheduler(true)
@@ -327,9 +329,9 @@ const CropManagement = () => {
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">Crop Management</h1>
+                <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">{t('total_crops', 'Crop Management')}</h1>
                 <p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-base font-medium">
-                  Track and optimize your crop production with smart farming tools
+                  {t('search', 'Track and optimize your crop production with smart farming tools')}
                 </p>
               </div>
 
@@ -345,8 +347,8 @@ const CropManagement = () => {
                 </Button>
                 <Button className="h-11 px-5 rounded-xl gradient-primary text-white shadow-hover interactive-element">
                   <Icon name="Plus" size={18} className="mr-2" />
-                  <span className="hidden sm:inline font-semibold text-white">Add Crop</span>
-                  <span className="inline sm:hidden font-semibold text-white">Add</span>
+                  <span className="hidden sm:inline font-semibold text-white">{t('add', 'Add Crop')}</span>
+                  <span className="inline sm:hidden font-semibold text-white">{t('add', 'Add')}</span>
                 </Button>
               </div>
             </div>
@@ -360,7 +362,7 @@ const CropManagement = () => {
                   </div>
                   <div>
                     <p className="text-2xl sm:text-3xl font-bold text-foreground leading-none mb-1">{crops?.length}</p>
-                    <p className="text-xs sm:text-sm text-muted-foreground font-medium">Active Crops</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground font-medium">{t('total_crops', 'Active Crops')}</p>
                   </div>
                 </div>
               </div>
@@ -398,7 +400,7 @@ const CropManagement = () => {
                   </div>
                   <div>
                     <p className="text-2xl sm:text-3xl font-bold text-foreground leading-none mb-1">87%</p>
-                    <p className="text-xs sm:text-sm text-muted-foreground font-medium">Avg Health</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground font-medium">{t('disease_detection', 'Avg Health')}</p>
                   </div>
                 </div>
               </div>
@@ -430,7 +432,7 @@ const CropManagement = () => {
                   key={tab?.id}
                   onClick={() => setActiveTab(tab?.id)}
                   className={`flex-shrink-0 flex items-center space-x-2 py-3 sm:py-4 border-b-2 font-medium text-sm sm:text-base transition-all duration-300 ${activeTab === tab?.id
-                      ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                 >
                   <Icon name={tab?.icon} size={18} className={activeTab === tab?.id ? 'text-primary' : 'text-muted-foreground'} />

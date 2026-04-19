@@ -6,6 +6,7 @@ import VoiceAssistant from '../../components/VoiceAssistant';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import { askAgriculturalQuestion } from '../../services/ragService';
+import { useLanguage } from '../../context/LanguageContext';
 
 const AgriAssistant = () => {
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
@@ -13,6 +14,16 @@ const AgriAssistant = () => {
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [cropContext, setCropContext] = useState('');
+    const { currentLanguage, t, translateDynamic } = useLanguage();
+
+    const languagesMap = {
+        'eng': 'English',
+        'lug': 'Luganda',
+        'ach': 'Acholi',
+        'teo': 'Ateso',
+        'lgg': 'Lugbara',
+        'nyn': 'Runyankole'
+    };
 
     useEffect(() => {
         const checkScreenSize = () => {
@@ -38,7 +49,7 @@ const AgriAssistant = () => {
 
         try {
             const result = await askAgriculturalQuestion(messageText, {
-                language: 'English',
+                language: languagesMap[currentLanguage] || 'English',
                 location: 'Uganda',
                 cropType: cropContext,
             });
@@ -70,10 +81,10 @@ const AgriAssistant = () => {
     };
 
     const suggestedQuestions = [
-        { text: 'When is the best time to plant maize?', icon: 'Sprout' },
-        { text: 'How to cure banana wilt disease?', icon: 'Bug' },
-        { text: 'Current price of beans in Kampala?', icon: 'TrendingUp' },
-        { text: 'What is the ideal NPK ratio for coffee?', icon: 'Leaf' }
+        { text: t('maize_price', 'When is the best time to plant maize?'), icon: 'Sprout' },
+        { text: t('disease_detection', 'How to cure banana wilt disease?'), icon: 'Bug' },
+        { text: t('maize_price', 'Current price of beans in Kampala?'), icon: 'TrendingUp' },
+        { text: t('recommended_activities', 'What is the ideal NPK ratio for coffee?'), icon: 'Leaf' }
     ];
 
     return (
@@ -100,8 +111,8 @@ const AgriAssistant = () => {
                                         <Icon name="Bot" size={20} className="text-primary" />
                                     </div>
                                     <div>
-                                        <h2 className="text-xl font-bold text-foreground">AskBuddy AI</h2>
-                                        <p className="text-xs font-medium text-muted-foreground">Your Farming Assistant</p>
+                                        <h2 className="text-xl font-bold text-foreground">{t('ask_buddy', 'AskBuddy AI')}</h2>
+                                        <p className="text-xs font-medium text-muted-foreground">{t('suggested_questions', 'Your Farming Assistant')}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
@@ -125,7 +136,7 @@ const AgriAssistant = () => {
                                         className="border-muted hover:bg-muted font-medium text-sm rounded-lg"
                                     >
                                         <Icon name="Trash2" size={16} className="mr-2" />
-                                        Clear Chat
+                                        {t('clear_chat', 'Clear Chat')}
                                     </Button>
                                 </div>
                             </div>
@@ -147,7 +158,7 @@ const AgriAssistant = () => {
                         <div className="hidden lg:flex flex-col lg:w-1/3 w-full bg-slate-50/80 backdrop-blur-sm rounded-2xl border border-border p-6 shadow-sm overflow-y-auto">
                             <h3 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
                                 <Icon name="Sparkles" size={20} className="text-accent" />
-                                Suggested Questions
+                                {t('suggested_questions', 'Suggested Questions')}
                             </h3>
                             <div className="flex flex-col gap-3">
                                 {suggestedQuestions.map((q, idx) => (
@@ -170,10 +181,10 @@ const AgriAssistant = () => {
                                 <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Icon name="Mic" size={16} className="text-primary" />
-                                        <span className="text-sm font-semibold text-foreground">Try Voice Input</span>
+                                        <span className="text-sm font-semibold text-foreground">{t('ask_buddy', 'Try Voice Input')}</span>
                                     </div>
                                     <p className="text-xs text-muted-foreground leading-relaxed">
-                                        Tap the microphone icon in the chat input below to speak directly to AskBuddy in English, Luganda, or Runyankole.
+                                        {t('chat_placeholder', 'Speak directly to AskBuddy in your local language.')}
                                     </p>
                                 </div>
                             </div>

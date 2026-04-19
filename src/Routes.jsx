@@ -3,6 +3,7 @@ import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
 import ScrollToTop from "components/ScrollToTop";
 import ErrorBoundary from "components/ErrorBoundary";
 import NotFound from "pages/NotFound";
+import LandingPage from './pages/landing';
 import PlantDiseaseDetection from './pages/plant-disease-detection';
 import LoginPage from './pages/login';
 import SignUpPage from './pages/signup';
@@ -23,7 +24,7 @@ const Routes = () => {
         <ScrollToTop />
         <RouterRoutes>
           {/* Define your route here */}
-          <Route path="/" element={<CropManagement />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/plant-disease-detection" element={<PlantDiseaseDetection />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />

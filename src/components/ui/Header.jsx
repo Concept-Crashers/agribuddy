@@ -2,40 +2,43 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
+import { useLanguage } from '../../context/LanguageContext';
+import LanguageToggle from './LanguageToggle';
 
 const Header = ({ onToggleSidebar, sidebarExpanded = true, userRole = 'farmer' }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   const navigationItems = [
     {
-      label: 'Dashboard',
+      label: t('dashboard', 'Dashboard'),
       path: '/farmer-dashboard',
       icon: 'LayoutDashboard',
       roles: ['farmer', 'ngo', 'government']
     },
     {
-      label: 'Disease Detection',
+      label: t('disease_detection', 'Disease Detection'),
       path: '/plant-disease-detection',
       icon: 'Bug',
       roles: ['farmer', 'ngo']
     },
     {
-      label: 'Weather',
+      label: t('weather', 'Weather'),
       path: '/weather-dashboard',
       icon: 'CloudSun',
       roles: ['farmer', 'ngo', 'government']
     },
     {
-      label: 'Crop Management',
+      label: t('crop_management', 'Crop Management'),
       path: '/crop-management',
       icon: 'Wheat',
       roles: ['farmer', 'ngo']
     },
     {
-      label: 'Livestock',
+      label: t('livestock', 'Livestock'),
       path: '/livestock-management',
       icon: 'Cow',
       roles: ['farmer', 'ngo']
@@ -144,6 +147,8 @@ const Header = ({ onToggleSidebar, sidebarExpanded = true, userRole = 'farmer' }
 
         {/* Right Section - User Actions */}
         <div className="flex items-center space-x-3">
+          <LanguageToggle />
+
           <Button
             variant="ghost"
             size="icon"

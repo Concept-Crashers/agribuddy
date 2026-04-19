@@ -3,6 +3,7 @@ const Farmer = require('../models/Farmer');
 const SubscriptionLog = require('../models/SubscriptionLog');
 const geminiService = require('./geminiService');
 const smsService = require('./smsService');
+const marketPriceService = require('./marketPriceService');
 
 /**
  * Start the automated delivery service for subscribed farmers.
@@ -56,6 +57,16 @@ function startCronJobs() {
 
         } catch (error) {
             console.error('Error during agricultural tips cron job execution:', error);
+        }
+    });
+
+    // Sync Market Prices every 12 hours (00:00 and 12:00)
+    cron.schedule('0 0,12 * * *', async () => {
+        console.log('Running scheduled Market Price Synchronization...');
+        try {
+            await marketPriceService.syncAllPrices();
+        } catch (error) {
+            console.error('Error during market price sync cron job execution:', error);
         }
     });
 }

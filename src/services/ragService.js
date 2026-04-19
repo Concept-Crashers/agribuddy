@@ -94,7 +94,33 @@ Provide a clear, helpful answer:`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
-        const answer = response.text();
+        let answer = response.text();
+
+        // If not English, translate using the backend service
+        if (language !== 'English') {
+            try {
+                const langCodes = {
+                    'Luganda': 'lug',
+                    'Acholi': 'ach',
+                    'Ateso': 'teo',
+                    'Lugbara': 'lgg',
+                    'Runyankole': 'nyn'
+                };
+                const targetCode = langCodes[language];
+                if (targetCode) {
+                    const axios = (await import('axios')).default;
+                    const transRes = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/auth/translate`, {
+                        text: answer,
+                        targetLang: targetCode
+                    });
+                    if (transRes.data && transRes.data.translatedText) {
+                        answer = transRes.data.translatedText;
+                    }
+                }
+            } catch (tError) {
+                console.error('Translation error in RAG service:', tError);
+            }
+        }
 
         return {
             success: true,

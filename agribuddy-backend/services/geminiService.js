@@ -8,7 +8,9 @@ const withTimeout = (promise, ms) => {
     return Promise.race([promise, timeout]);
 };
 
-const getAgriculturalAdvice = async (question, context = '') => {
+const languageService = require('./languageService');
+
+const getAgriculturalAdvice = async (question, context = '', language = 'eng') => {
     try {
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) throw new Error('GEMINI_API_KEY is not set');
@@ -21,16 +23,21 @@ const getAgriculturalAdvice = async (question, context = '') => {
 Context: ${context}
 Question: ${question}
 
-Give practical advice for Uganda. Be very concise - max 130 characters for USSD display.`;
+Give practical advice for Uganda. Keep it concise.`;
 
         // Race against 8s timeout to stay within USSD limits
         const result = await withTimeout(model.generateContent(prompt), 8000);
         const response = await result.response;
-        const text = response.text();
+        let text = response.text().trim();
+
+        // Translate if not English
+        if (language !== 'eng') {
+            text = await languageService.translateText(text, 'eng', language);
+        }
 
         return {
             success: true,
-            answer: text.trim().substring(0, 155), // Hard cap for USSD
+            answer: text,
             timestamp: new Date().toISOString(),
         };
     } catch (error) {

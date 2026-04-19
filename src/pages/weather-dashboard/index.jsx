@@ -3,11 +3,13 @@ import Header from '../../components/ui/Header';
 import Sidebar from '../../components/ui/Sidebar';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
+import { useLanguage } from '../../context/LanguageContext';
 
 const WeatherDashboard = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [userRole] = useState('farmer');
+  const { t } = useLanguage();
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -50,9 +52,9 @@ const WeatherDashboard = () => {
         <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-8xl mx-auto">
 
           <div className="mb-2">
-            <h1 className="text-3xl font-bold text-foreground mb-1">Weather & Irrigation</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-1">{t('weather', 'Weather & Irrigation')}</h1>
             <p className="text-muted-foreground text-sm font-medium">
-              Hyperlocal forecasts and actionable watering insights for Wakiso District.
+              {t('weather_overview', 'Hyperlocal forecasts and actionable watering insights for Wakiso District.')}
             </p>
           </div>
 
@@ -67,7 +69,7 @@ const WeatherDashboard = () => {
 
               <div className="relative z-10 flex justify-between items-start">
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">Current Weather</h2>
+                  <h2 className="text-lg font-bold text-foreground">{t('weather', 'Current Weather')}</h2>
                   <p className="text-sm font-medium text-primary">Wakiso District, Uganda</p>
 
                   <div className="mt-6 flex items-center">
@@ -84,7 +86,7 @@ const WeatherDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Icon name="Droplets" size={16} />
-                      <span className="text-xs font-semibold">Humidity</span>
+                      <span className="text-xs font-semibold">{t('humidity', 'Humidity')}</span>
                     </div>
                     <span className="text-sm font-bold text-foreground">68%</span>
                   </div>
@@ -98,7 +100,7 @@ const WeatherDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Icon name="CloudRain" size={16} />
-                      <span className="text-xs font-semibold">Rain</span>
+                      <span className="text-xs font-semibold">{t('rainfall', 'Rain')}</span>
                     </div>
                     <span className="text-sm font-bold text-foreground">30%</span>
                   </div>
@@ -113,7 +115,7 @@ const WeatherDashboard = () => {
                 <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
                   <Icon name="Droplets" size={24} />
                 </div>
-                <h2 className="text-xl font-bold text-slate-800 mb-2">Irrigation Recommendation</h2>
+                <h2 className="text-xl font-bold text-slate-800 mb-2">{t('recommended_activities', 'Irrigation Recommendation')}</h2>
                 <p className="text-blue-800/80 font-medium mb-4 leading-relaxed">
                   Optimal time to water crops today is between <span className="font-bold text-blue-700">4:00 PM - 6:00 PM</span> to minimize evaporation and maximize absorption.
                 </p>
@@ -126,7 +128,7 @@ const WeatherDashboard = () => {
 
           {/* MIDDLE SECTION: 7-Day Forecast */}
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-4">7-Day Forecast</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">{t('forecast_7d', '7-Day Forecast')}</h2>
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
               {forecast.map((day, idx) => (
                 <div key={idx} className="bg-card border border-border min-w-[120px] rounded-2xl p-5 flex flex-col items-center justify-between shadow-sm hover:shadow-organic-sm hover:border-primary/30 transition-all cursor-pointer group">
@@ -148,7 +150,7 @@ const WeatherDashboard = () => {
 
           {/* BOTTOM SECTION: Seasonal Insights */}
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-4">Seasonal Insights</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">{t('seasonal_calendar', 'Seasonal Insights')}</h2>
             <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-organic-sm relative">
               <div className="flex items-center gap-3 mb-6 block lg:flex content-start">
                 <div className="p-2 bg-success/10 rounded-lg text-success"><Icon name="Leaf" size={20} /></div>

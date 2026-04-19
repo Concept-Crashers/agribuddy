@@ -3,13 +3,14 @@ import Header from '../../components/ui/Header';
 import Sidebar from '../../components/ui/Sidebar';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
+import { useLanguage } from '../../context/LanguageContext';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 // ─── Category config with BigHaat-style icons and subcategories ───────────────
 const CATEGORIES = [
-    { key: '', label: 'All Products', icon: 'LayoutGrid', color: 'from-slate-500 to-slate-600' },
-    { key: 'seeds', label: 'Seeds', icon: 'Sprout', color: 'from-green-500 to-emerald-600',
+    { key: '', label: 'all_products', icon: 'LayoutGrid', color: 'from-slate-500 to-slate-600' },
+    { key: 'seeds', label: 'seeds', icon: 'Sprout', color: 'from-green-500 to-emerald-600',
       subcategories: ['Open Pollinated', 'Hybrid Seeds', 'Vegetable Seeds', 'Pasture/Forage'] },
     { key: 'crop_protection', label: 'Crop Protection', icon: 'ShieldAlert', color: 'from-red-500 to-rose-600',
       subcategories: ['Insecticides', 'Herbicides', 'Fungicides', 'Bio-Pesticides'] },
@@ -19,10 +20,10 @@ const CATEGORIES = [
       subcategories: ['Hand Tools', 'Irrigation', 'Sprayers', 'Post-Harvest'] },
     { key: 'animal_husbandry', label: 'Animal Husbandry', icon: 'Beef', color: 'from-yellow-500 to-orange-500',
       subcategories: ['Animal Feeds', 'Veterinary Drugs', 'Vaccines', 'Supplements'] },
-    { key: 'organic', label: 'Organic', icon: 'Leaf', color: 'from-teal-500 to-green-600',
+    { key: 'organic', label: 'organic', icon: 'Leaf', color: 'from-teal-500 to-green-600',
       subcategories: ['Organic Fertilizers', 'Bio-Fungicides', 'Compost/Humus', 'Organic Pesticides'] },
-    { key: 'services', label: 'Services', icon: 'Truck', color: 'from-purple-500 to-violet-600',
-      subcategories: ['Soil Testing', 'Drone Spraying', 'Agronomist Visit', 'Land Preparation'] },
+    { key: 'services', label: 'services', icon: 'Briefcase', color: 'from-purple-500 to-violet-600',
+      subcategories: ['equipment_leasing', 'extension_services', 'land_leasing', 'processing_services', 'transport_logistics', 'financial_insurance'] },
 ];
 
 const UGANDAN_CROPS = ['Maize', 'Coffee', 'Beans', 'Banana (Matooke)', 'Cassava', 'Rice', 'Groundnuts', 'Tomato', 'Onion', 'Cabbage'];
@@ -41,6 +42,7 @@ const DiscountBadge = ({ price, originalPrice }) => {
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 const ProductCard = ({ product, onOrder }) => {
+    const { t } = useLanguage();
     const cat = CATEGORIES.find(c => c.key === product.category) || CATEGORIES[0];
 
     return (
@@ -61,7 +63,7 @@ const ProductCard = ({ product, onOrder }) => {
                         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{product.brand}</span>
                     )}
                     <span className="text-xs bg-primary/10 text-primary font-semibold px-2 py-0.5 rounded-full capitalize ml-auto flex-shrink-0">
-                        {cat.label}
+                        {t(cat.label, cat.label)}
                     </span>
                 </div>
 
@@ -70,7 +72,7 @@ const ProductCard = ({ product, onOrder }) => {
                 </h3>
 
                 {product.subcategory && (
-                    <span className="text-xs text-muted-foreground mb-1">📦 {product.subcategory}</span>
+                    <span className="text-xs text-muted-foreground mb-1">📦 {t(String(product.subcategory).toLowerCase().replace(/ \+ /g, '_').replace(/ /g, '_'), product.subcategory)}</span>
                 )}
 
                 <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">{product.description}</p>
@@ -98,10 +100,9 @@ const ProductCard = ({ product, onOrder }) => {
                 {/* Price row */}
                 <div className="flex items-end justify-between mt-auto mb-3">
                     <div>
-                        <div className="text-lg font-bold text-success">
-                            UGX {product.price?.toLocaleString()}
-                            <span className="text-xs font-normal text-muted-foreground ml-1">/{product.unit}</span>
-                        </div>
+                        <span className="text-lg font-extrabold text-foreground tracking-tight">
+                            UGX {product.price?.toLocaleString()}<span className="text-xs font-normal text-muted-foreground ml-1">/ {product.unit || 'item'}</span>
+                        </span>
                         {product.originalPrice > product.price && (
                             <div className="text-xs text-muted-foreground line-through">
                                 UGX {product.originalPrice?.toLocaleString()}
@@ -159,7 +160,7 @@ const PromoCarousel = ({ deals }) => {
             <h3 className="font-bold text-lg leading-snug max-w-xs">{d.name}</h3>
             {d.brand && <p className="text-sm opacity-75 mt-1">{d.brand}</p>}
             <div className="flex items-center gap-3 mt-3">
-                <span className="text-2xl font-extrabold">UGX {d.price?.toLocaleString()}</span>
+                <span className="text-2xl font-extrabold">UGX {d.price?.toLocaleString()}<span className="text-sm font-normal text-white/80 ml-1">/ {d.unit || 'item'}</span></span>
                 {d.originalPrice > d.price && (
                     <span className="line-through text-white/60 text-sm">UGX {d.originalPrice?.toLocaleString()}</span>
                 )}
@@ -336,6 +337,7 @@ const OrderModal = ({ product, onClose, onPlace }) => {
 
 // ─── Main Marketplace Page ────────────────────────────────────────────────────
 const Marketplace = () => {
+    const { t } = useLanguage();
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [products, setProducts] = useState([]);
@@ -345,10 +347,13 @@ const Marketplace = () => {
     const [search, setSearch] = useState('');
     const [searchDebounce, setSearchDebounce] = useState('');
     const [category, setCategory] = useState('');
+    const [subcategory, setSubcategory] = useState('');
     const [activeCrop, setActiveCrop] = useState('');
     const [activePest, setActivePest] = useState('');
     const [orderProduct, setOrderProduct] = useState(null);
     const [contextOpen, setContextOpen] = useState(false);
+
+    const activeCategoryConfig = CATEGORIES.find(c => c.key === category) || CATEGORIES[0];
 
     useEffect(() => {
         const handler = setTimeout(() => setSearchDebounce(search), 400);
@@ -370,8 +375,9 @@ const Marketplace = () => {
         setError(null);
         try {
             const params = new URLSearchParams();
-            if (searchDebounce) params.append('q', searchDebounce);
+            if (searchDebounce) params.append('search', searchDebounce);
             if (category) params.append('category', category);
+            if (subcategory && category) params.append('subcategory', subcategory);
             if (activeCrop) params.append('crop', activeCrop);
             if (activePest) params.append('pest', activePest);
             params.append('limit', '50');
@@ -391,7 +397,7 @@ const Marketplace = () => {
         } finally {
             setLoading(false);
         }
-    }, [searchDebounce, category, activeCrop, activePest]);
+    }, [searchDebounce, category, subcategory, activeCrop, activePest]);
 
     useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
@@ -409,6 +415,7 @@ const Marketplace = () => {
 
     const handleCategoryClick = (cat) => {
         setCategory(cat);
+        setSubcategory('');
         setActiveCrop('');
         setActivePest('');
     };
@@ -441,8 +448,8 @@ const Marketplace = () => {
                                     <Icon name="ShoppingBag" size={28} className="text-primary" />
                                 </div>
                                 <div>
-                                    <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Marketplace</h1>
-                                    <p className="text-muted-foreground text-sm mt-1">Seeds, inputs, equipment & more</p>
+                                    <h1 className="text-3xl sm:text-4xl font-bold text-foreground">{t('marketplace', 'Marketplace')}</h1>
+                                    <p className="text-muted-foreground text-sm mt-1">{t('browse_products', 'Seeds, inputs, equipment & more')}</p>
                                 </div>
                             </div>
                             {/* Mobile context filter toggle */}
@@ -484,7 +491,7 @@ const Marketplace = () => {
                             <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                             <input
                                 value={search} onChange={e => setSearch(e.target.value)}
-                                placeholder="Search products, brands, crops..."
+                                placeholder={t('search', 'Search products, brands, crops...')}
                                 className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                             />
                         </div>
@@ -499,10 +506,24 @@ const Marketplace = () => {
                                             : 'bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground'
                                     }`}>
                                     <Icon name={cat.icon} size={14} />
-                                    {cat.label}
+                                    {t(cat.label, cat.label)}
                                 </button>
                             ))}
                         </div>
+
+                        {/* Subcategories */}
+                        {activeCategoryConfig?.subcategories?.length > 0 && (
+                            <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+                                {activeCategoryConfig.subcategories.map(sub => (
+                                    <button
+                                        key={sub}
+                                        className="px-4 py-1.5 rounded-full border border-border text-xs font-semibold whitespace-nowrap hover:border-primary/50 text-foreground"
+                                    >
+                                        {t(sub.toLowerCase().replace(/ \+ /g, '_').replace(/ /g, '_'), sub)}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
 
                         {/* Products Grid */}
                         {loading ? (
