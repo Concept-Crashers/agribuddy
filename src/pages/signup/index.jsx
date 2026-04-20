@@ -37,7 +37,7 @@ const SignUpPage = () => {
     setIsLoading(true);
     
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/register', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/auth/register`, {
         fullName: formData.fullName,
         phoneNumber: formData.phoneNumber,
         district: formData.district,

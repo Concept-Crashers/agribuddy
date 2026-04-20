@@ -37,7 +37,7 @@ const LoginPage = () => {
     setMessage(null);
     
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/auth/login`, {
         phoneNumber: formData.identifier,
         password: formData.password
       });
@@ -60,7 +60,7 @@ const LoginPage = () => {
     setMessage(null);
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/forgotpassword', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/auth/forgotpassword`, {
         phoneNumber: formData.identifier
       });
 
@@ -88,7 +88,7 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.put('http://localhost:3001/api/auth/resetpassword', {
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/auth/resetpassword`, {
         otp: formData.otp,
         password: formData.newPassword
       });

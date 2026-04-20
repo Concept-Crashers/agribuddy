@@ -26,7 +26,7 @@ const MarketPrices = () => {
     const fetchPrices = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:3001/api/market-prices');
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/market-prices`);
             setPrices(response.data.data);
         } catch (error) {
             console.error('Error fetching market prices:', error);
@@ -38,7 +38,7 @@ const MarketPrices = () => {
     const handleSync = async () => {
         setIsSyncing(true);
         try {
-            await axios.post('http://localhost:3001/api/market-prices/sync');
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/market-prices/sync`);
             await fetchPrices();
         } catch (error) {
             console.error('Error syncing prices:', error);
