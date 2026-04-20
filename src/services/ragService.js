@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import axios from 'axios';
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
@@ -108,7 +109,6 @@ Provide a clear, helpful answer:`;
                 };
                 const targetCode = langCodes[language];
                 if (targetCode) {
-                    const axios = (await import('axios')).default;
                     const transRes = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}/api/auth/translate`, {
                         text: answer,
                         targetLang: targetCode
